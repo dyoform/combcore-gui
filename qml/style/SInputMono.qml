@@ -3,14 +3,13 @@ import QtQuick.Controls 2.12
 import "../"
 
 TextField {
-    padding: 0
     background: Rectangle {
-            implicitWidth: 10000
+            implicitWidth: 200
             implicitHeight: 20
             color: "transparent"
     }
+    padding: 0
     id: textMono
-    readOnly: true
     wrapMode: Text.WordWrap
     selectByMouse: true
     color: Constants.textColor

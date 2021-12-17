@@ -16,10 +16,13 @@ class WalletTable : public QAbstractTableModel
 public:
     void inject(DataModel* model) {
         _model = model;
+        connect(_model, SIGNAL(dataChanged()), this, SLOT(updateData()));
+        rows =_model->constructs.size();
+        updateData();
     }
     int rowCount(const QModelIndex & = QModelIndex()) const override
     {
-        return _model->constructs.size();
+        return rows;
     }
 
     int columnCount(const QModelIndex & = QModelIndex()) const override
@@ -68,11 +71,20 @@ public:
     Construct* selectedConstruct() {return _selectedConstruct;}
 private:
     DataModel* _model;
+    int rows = 0;
     int _selectedRow=-1;
     ConstructType _selectedType;
     Construct* _selectedConstruct;
 public slots:
     void selectRow(int row);
+    void updateData() {
+        qInfo() << "update " << _model->constructs.size();
+        int old = rows;
+        rows = _model->constructs.size();
+        beginResetModel();
+        emit dataChanged(createIndex(0,0), createIndex(old, 3));
+        endResetModel();
+    }
 signals:
     void selectedRowChanged();
     void selectedTypeChanged();

@@ -19,7 +19,7 @@ Item {
         SText {
             width: 100
             height: 20
-            text: "Source"
+            text: "Target"
         }
 
 
@@ -28,32 +28,18 @@ Item {
             height: 20
             color: Constants.highlightColor
             STextMono {
+                validator: RegExpValidator { regExp: /[0-9A-F]+/ }
                 anchors.fill: parent
                 readOnly: false
-                id: source
+                id: target
                 leftPadding: 5
-                placeholderText: "Source"
+                placeholderText: "Target"
             }
         }
+    }
 
-        SText {
-            width: 100
-            height: 20
-            text: "Destination"
-        }
-
-        Rectangle {
-            width: container.width-105
-            height: 20
-            color: Constants.highlightColor
-            STextMono {
-                anchors.fill: parent
-                readOnly: false
-                id: destination
-                leftPadding: 5
-                placeholderText: "Destination"
-            }
-        }
+    function go() {
+        GUI.findCommits(target.text)
     }
 
 }

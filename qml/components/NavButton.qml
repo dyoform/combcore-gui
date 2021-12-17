@@ -7,15 +7,15 @@ import "../style"
 import "../"
 
 RoundButton {
-    property ActionControls controls: GUI.actionControls
+    property ScreenControls controls: GUI.screenControls
     readonly property real buttonSize: 50
-    property int guiAction: GUI.ACTION_NONE
+    property int guiScreen: GUI.SCREEN_NONE
     width: buttonSize
     height: buttonSize
     checkable: true
     display: AbstractButton.IconOnly
-    checked: controls.activeAction === guiAction
-    onPressed: controls.activeAction = guiAction
+    checked: controls.activeScreen === guiScreen
+    onPressed: controls.activeScreen = guiScreen
 
     background: Rectangle {
         implicitWidth: 50

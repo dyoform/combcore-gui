@@ -3,12 +3,12 @@
         <file>Main.qml</file>
         <file>Constants.qml</file>
         <file>components/OverviewScreen.qml</file>
-        <file>components/ActionBar.qml</file>
+        <file>components/NavBar.qml</file>
         <file>components/SettingsBar.qml</file>
         <file>style/SMenuBar.qml</file>
         <file>style/SMenu.qml</file>
         <file>style/SMenuSeperator.qml</file>
-        <file>components/ActionButton.qml</file>
+        <file>components/NavButton.qml</file>
         <file>style/SButton.qml</file>
         <file>images/wallet.svg</file>
         <file>images/settings.svg</file>
@@ -23,7 +23,8 @@
         <file>components/KeyInfo.qml</file>
         <file>components/StackInfo.qml</file>
         <file>components/TxInfo.qml</file>
-        <file>components/StackParameters.qml</file>
-        <file>components/TxParameters.qml</file>
+        <file>style/SInputMono.qml</file>
+        <file>components/GenerateKeyParameters.qml</file>
+        <file>style/SList.qml</file>
     </qresource>
 </RCC>

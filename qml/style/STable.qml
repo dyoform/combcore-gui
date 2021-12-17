@@ -80,10 +80,16 @@ Item {
                 anchors.leftMargin: 5
                 anchors.right: parent.right
                 anchors.rightMargin: 5
-                text: display
+                text: "" + display
                 onSelectedTextChanged: {
                     table.model.selectedRow = row
                     tableView.forceLayout()
+                }
+                onFocusChanged: {
+                    if(focus) {
+                        table.model.selectedRow = row
+                        tableView.forceLayout()
+                    }
                 }
 
             }

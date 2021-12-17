@@ -10,14 +10,14 @@ import "components"
 
 ApplicationWindow {
     id: window
-    width: 960
+    width: 980
     height: 540
     visible: true
     color: Constants.backgroundColor
     title: qsTr("COMBCore")
 
-    ActionBar {
-        id: actionBar
+    NavBar {
+        id: navBar
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.left: parent.left
@@ -25,16 +25,33 @@ ApplicationWindow {
 
     StackLayout {
         anchors.margins: 5
-        anchors.left: actionBar.right
+        anchors.left: navBar.right
         anchors.top: parent.top
-        anchors.bottom: parent.bottom
+        anchors.bottom: statusBar.top
         anchors.right: parent.right
-        currentIndex: GUI.actionControls.activeAction
+        currentIndex: GUI.screenControls.activeScreen
         OverviewScreen {
         }
         WalletScreen {
         }
         ActionsScreen {
+        }
+    }
+
+    Rectangle {
+        id: statusBar
+        color: Constants.darkStructureColor
+        height: 24
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        anchors.left: navBar.right
+        SText {
+            anchors.fill: parent
+            topPadding: 3
+            leftPadding: 5
+
+            text: GUI.overview.status
+            font.bold: true
         }
     }
 

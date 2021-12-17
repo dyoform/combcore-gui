@@ -10,6 +10,7 @@ import "../style"
 import "../"
 
 Item {
+     property WalletScreen thisScreen: GUI.wallet
     Rectangle {
         id: info
         anchors.top: parent.top
@@ -40,6 +41,27 @@ Item {
                 text: "Wallet"
                 font.bold: true
             }
+            /*Rectangle {
+                anchors.right: infoHeader.right
+                anchors.rightMargin: 5
+                anchors.top: infoHeader.top
+                anchors.topMargin: 5
+                width: 600
+                height: 20
+                radius: 2
+                color: Constants.structureColor
+                SInputMono {
+                    anchors.fill: parent
+                    readOnly: false
+                    id: search
+                    leftPadding: 5
+                    placeholderText: "Search"
+                    text: "Search"
+                    onTextChanged: {
+                        console.log(text)
+                    }
+                }
+            }*/
         }
 
         STable {
@@ -47,9 +69,9 @@ Item {
             anchors.margins: 5
             anchors.topMargin: 35
             widthProvider: function(c) {
-                return [110, 60, info.width-180][c]
+                return [120, 60, info.width-190][c]
             }
-            model: GUI.walletTable
+            model: thisScreen.walletTable
         }
     }
     Rectangle {
@@ -78,7 +100,7 @@ Item {
 
             SText {
                 padding: 6
-                text: ["None","Key", "Stack", "Transaction"][GUI.walletTable.selectedType]
+                text: ["None", "Key", "Stack", "Transaction"][thisScreen.walletTable.selectedType]
                 font.bold: true
             }
         }
@@ -88,7 +110,7 @@ Item {
             anchors.margins: 5
             anchors.topMargin: 35
 
-            currentIndex: GUI.walletTable.selectedType-1
+            currentIndex: thisScreen.walletTable.selectedType-1
 
             KeyInfo {
 
@@ -100,7 +122,7 @@ Item {
 
         }
         Component.onCompleted: {
-            GUI.walletTable.selectedRow = 0
+            thisScreen.walletTable.selectedRow = 0
         }
 
     }

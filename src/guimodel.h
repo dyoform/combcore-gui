@@ -4,31 +4,37 @@
 #include <QObject>
 #include <QPoint>
 #include <qqml.h>
-#include "actioncontrols.h"
-#include "pendingtable.h"
-#include "wallettable.h"
+#include "screencontrols.h"
+#include "actionscreen.h"
+#include "overviewscreen.h"
+#include "walletscreen.h"
 #include "datamodel.h"
 
 class GUIModel : public QObject {
     Q_OBJECT
-    Q_PROPERTY(ActionControls* actionControls READ actionControls NOTIFY actionControlsChanged)
-    Q_PROPERTY(PendingTable* pendingTable READ pendingTable NOTIFY pendingTableChanged)
-    Q_PROPERTY(WalletTable* walletTable READ walletTable NOTIFY walletTableChanged)
+    Q_PROPERTY(ScreenControls* screenControls READ screenControls CONSTANT)
+    Q_PROPERTY(OverviewScreen* overview READ overview CONSTANT)
+    Q_PROPERTY(ActionScreen* action READ action CONSTANT)
+    Q_PROPERTY(WalletScreen* wallet READ wallet CONSTANT)
     QML_ELEMENT
 public:
-    explicit GUIModel(DataModel* model);
-    ActionControls* actionControls() {return &_actionControls;}
-    PendingTable* pendingTable() {return &_pendingTable;}
-    WalletTable* walletTable() {return &_walletTable;}
+    explicit GUIModel(DataModel* model) {
+        _model = model;
+        _overviewScreen.inject(model);
+        _actionScreen.inject(model);
+        _walletScreen.inject(model);
+    }
+    ScreenControls* screenControls() {return &_screenControls;}
+    OverviewScreen* overview() {return &_overviewScreen;}
+    ActionScreen* action() {return &_actionScreen;}
+    WalletScreen* wallet() {return &_walletScreen;}
 private:
     DataModel* _model;
-    ActionControls _actionControls;
-    PendingTable _pendingTable;
-    WalletTable _walletTable;
+    ScreenControls _screenControls;
+    OverviewScreen _overviewScreen;
+    ActionScreen _actionScreen;
+    WalletScreen _walletScreen;
 signals:
-    void actionControlsChanged();
-    void pendingTableChanged();
-    void walletTableChanged();
 };
 
 #endif // GUIMODEL_H

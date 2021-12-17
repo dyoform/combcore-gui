@@ -52,36 +52,22 @@ Item {
         clip: true
         SComboBox {
             id: actionCombo
-            model: ["Generate Key", "Create Stack", "Create Transaction"]
+            model: ["Generate Key"]
             anchors.left: actions.left
             anchors.right: actions.right
         }
 
         StackLayout {
-            currentIndex: actionCombo.currentIndex
+            currentIndex: 0
             anchors.left: actions.left
             anchors.right: actions.right
             anchors.top: actionCombo.bottom
+            anchors.bottom: actions.bottom
             id: parameters
 
-
-            Item {}
-            StackParameters {
-                id: createStack
+            GenerateKeyParameters {
             }
-            TxParameters {
-                id: createTx
-            }
-        }
 
-
-        SButton {
-            anchors.left: actions.left
-            anchors.right: actions.right
-            anchors.bottom: actions.bottom
-            anchors.topMargin: 5
-            font.bold: true
-            text: "Go!"
         }
     }
 }

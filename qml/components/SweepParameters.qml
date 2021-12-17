@@ -9,12 +9,7 @@ import "../style"
 import "../"
 
 Item {
-
-    property WalletTable table: GUI.wallet.walletTable
     id: container
-    clip: true
-
-
     Grid {
         id: grid
         padding: 5
@@ -24,7 +19,7 @@ Item {
         SText {
             width: 100
             height: 20
-            text: "Source"
+            text: "Target"
         }
 
 
@@ -33,15 +28,19 @@ Item {
             height: 20
             color: Constants.highlightColor
             STextMono {
+                validator: RegExpValidator { regExp: /[0-9A-F]+/ }
+                anchors.fill: parent
+                readOnly: false
+                id: target
                 leftPadding: 5
-                id: source
+                placeholderText: "Target"
             }
         }
 
         SText {
             width: 100
             height: 20
-            text: "Destination"
+            text: "Range"
         }
 
         Rectangle {
@@ -49,19 +48,18 @@ Item {
             height: 20
             color: Constants.highlightColor
             STextMono {
+                validator: IntValidator {bottom: 0; top: 1024}
+                anchors.fill: parent
+                readOnly: false
+                id: range
                 leftPadding: 5
-                id: destination
-            }
-        }
-
-        Connections {
-            target: table
-            function onSelectedConstructChanged() {
-                if(table.selectedType == 3) {
-                    destination.text = table.selectedConstruct.destination
-                    source.text = table.selectedConstruct.source
-                }
+                placeholderText: "0"
             }
         }
     }
+
+    function go() {
+        GUI.doSweep(target.text, parseInt(range.text))
+    }
+
 }

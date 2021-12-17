@@ -9,6 +9,7 @@ import "../style"
 import "../"
 
 Item {
+    property WalletTable table: GUI.wallet.walletTable
     id: container
     clip: true
     Grid {
@@ -50,11 +51,11 @@ Item {
             }
         }
         Connections {
-            target: GUI.walletTable
+            target: table
             function onSelectedConstructChanged() {
-                if(GUI.walletTable.selectedType == 1) {
-                    publicKey.text = GUI.walletTable.selectedConstruct.publicKey
-                    balance.text = GUI.walletTable.selectedConstruct.balance
+                if(table.selectedType == 1) {
+                    publicKey.text = table.selectedConstruct.publicKey
+                    balance.text = table.selectedConstruct.balance
                 }
             }
         }

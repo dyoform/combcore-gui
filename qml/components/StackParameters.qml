@@ -32,7 +32,7 @@ Item {
                 readOnly: false
                 id: destination
                 leftPadding: 5
-                text: ""
+                placeholderText: "Destination"
             }
         }
 
@@ -51,7 +51,7 @@ Item {
                 readOnly: false
                 id: change
                 leftPadding: 5
-                text: ""
+                placeholderText: "Change"
             }
         }
 
@@ -70,7 +70,7 @@ Item {
                 readOnly: false
                 id: sum
                 leftPadding: 5
-                text: "0"
+                placeholderText: "0"
             }
         }
     }

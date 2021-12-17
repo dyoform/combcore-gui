@@ -9,6 +9,7 @@ import "../style"
 import "../"
 
 Item {
+    property OverviewScreen screen: GUI.overview
     Rectangle {
         id: info
         anchors.top: infoHeader.bottom
@@ -44,11 +45,12 @@ Item {
     }
 
     Grid {
+        clip:true
         id: grid
         padding: 5
         columns: 2
         spacing: 2
-
+        width: 200
         anchors.top: info.top
         anchors.topMargin: 5
 
@@ -61,16 +63,16 @@ Item {
             text: " "
         }
         SText {
-            text: "Supply"
+            text: "Height"
         }
         STextMono {
-            text: "0 of 0"
+            text: screen.height
         }
         SText {
             text: "Commits"
         }
         STextMono {
-            text: "0"
+            text: screen.commits
         }
         SText {
             text: "Blockchain"
@@ -83,7 +85,21 @@ Item {
             text: "Height"
         }
         STextMono {
-            text: "0"
+            text: screen.btcHeight
+        }
+        SText {
+            text: "Known Height"
+            visible: screen.btcHeight !== screen.btcKnownHeight
+        }
+        STextMono {
+            text: screen.btcKnownHeight
+            visible: screen.btcHeight !== screen.btcKnownHeight
+        }
+        SText {
+            text: "Status"
+        }
+        SText {
+            text: screen.btcStatus
         }
     }
 
@@ -130,7 +146,7 @@ Item {
         widthProvider: function(c) {
             return [pending.width-110 < 0 ? 0 : pending.width-110, 100][c]
         }
-        model: GUI.pendingTable
+        model: screen.pendingTable
     }
 
 }

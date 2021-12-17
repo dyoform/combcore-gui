@@ -1,4 +1,4 @@
-QT += qml quick svg
+QT += qml quick svg network
 QTPLUGIN += qsvg qsvgicon
 
 CONFIG += c++11 qmltypes
@@ -11,8 +11,12 @@ SOURCES += \
         src/constructs/key.cpp \
         src/constructs/stack.cpp \
         src/constructs/transaction.cpp \
+        src/controls/actions/generatekeyaction.cpp \
+        src/controls/actionscreen.cpp \
+        src/controls/overviewscreen.cpp \
+        src/controls/screencontrols.cpp \
+        src/controls/walletscreen.cpp \
         src/datamodel.cpp \
-        src/controls/actioncontrols.cpp \
         src/guimodel.cpp \
         src/main.cpp \
         src/controls/pendingtable.cpp \
@@ -20,7 +24,7 @@ SOURCES += \
 
 RESOURCES += qml/qml.qrc
 
-INCLUDEPATH += src src/controls src/constructs
+INCLUDEPATH += src src/controls src/constructs src/controls/actions
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH = qml
@@ -39,8 +43,12 @@ HEADERS += \
     src/constructs/key.h \
     src/constructs/stack.h \
     src/constructs/transaction.h \
+    src/controls/actions/generatekeyaction.h \
+    src/controls/actionscreen.h \
+    src/controls/overviewscreen.h \
+    src/controls/screencontrols.h \
+    src/controls/walletscreen.h \
     src/datamodel.h \
-    src/controls/actioncontrols.h \
     src/guimodel.h \
     src/controls/pendingtable.h \
     src/controls/wallettable.h

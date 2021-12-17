@@ -9,6 +9,7 @@ import "../style"
 import "../"
 
 Item {
+    property WalletTable table: GUI.wallet.walletTable
     id: container
     clip: true
     Grid {
@@ -17,6 +18,21 @@ Item {
         columns: 2
         spacing: 2
 
+        SText {
+            width: 100
+            height: 20
+            text: "Change"
+        }
+
+        Rectangle {
+            width: container.width-105
+            height: 20
+            color: Constants.highlightColor
+            STextMono {
+                id: change
+                leftPadding: 5
+            }
+        }
         SText {
             width: 100
             height: 20
@@ -37,22 +53,6 @@ Item {
         SText {
             width: 100
             height: 20
-            text: "Change"
-        }
-
-        Rectangle {
-            width: container.width-105
-            height: 20
-            color: Constants.highlightColor
-            STextMono {
-                id: change
-                leftPadding: 5
-            }
-        }
-
-        SText {
-            width: 100
-            height: 20
             text: "Sum"
         }
 
@@ -66,12 +66,12 @@ Item {
             }
         }
         Connections {
-            target: GUI.walletTable
+            target: table
             function onSelectedConstructChanged() {
-                if(GUI.walletTable.selectedType == 2) {
-                    destination.text = GUI.walletTable.selectedConstruct.destination
-                    change.text = GUI.walletTable.selectedConstruct.change
-                    sum.text = GUI.walletTable.selectedConstruct.sum
+                if(table.selectedType == 2) {
+                    destination.text = table.selectedConstruct.destination
+                    change.text = table.selectedConstruct.change
+                    sum.text = table.selectedConstruct.sum
                 }
             }
         }
