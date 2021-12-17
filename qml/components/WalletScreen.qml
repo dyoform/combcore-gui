@@ -41,27 +41,30 @@ Item {
                 text: "Wallet"
                 font.bold: true
             }
-            /*Rectangle {
+
+            RoundButton {
                 anchors.right: infoHeader.right
                 anchors.rightMargin: 5
                 anchors.top: infoHeader.top
                 anchors.topMargin: 5
-                width: 600
-                height: 20
-                radius: 2
-                color: Constants.structureColor
-                SInputMono {
-                    anchors.fill: parent
-                    readOnly: false
-                    id: search
-                    leftPadding: 5
-                    placeholderText: "Search"
-                    text: "Search"
-                    onTextChanged: {
-                        console.log(text)
-                    }
+                background: Rectangle {
+                    implicitWidth: 20
+                    implicitHeight: 20
+                    opacity: enabled ? 1 : 0.3
+                    color: parent.pressed ? Constants.darkAccentColor : Constants.accentColor
+                    border.width: 0
+                    radius: 5
                 }
-            }*/
+                icon.height: 15
+                icon.width: 15
+                padding: 0
+                icon.source: "qrc:/images/update.svg"
+                icon.color: checked || pressed ? Constants.iconColor :  Constants.iconColorInvert
+
+                onPressed: {
+                    GUI.wallet.getWallet()
+                }
+            }
         }
 
         STable {

@@ -78,7 +78,6 @@ private:
 public slots:
     void selectRow(int row);
     void updateData() {
-        qInfo() << "update " << _model->constructs.size();
         int old = rows;
         rows = _model->constructs.size();
         beginResetModel();

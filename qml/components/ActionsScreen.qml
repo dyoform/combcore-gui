@@ -52,13 +52,13 @@ Item {
         clip: true
         SComboBox {
             id: actionCombo
-            model: ["Generate Key"]
+            model: ["Generate Key", "Create Stack"]
             anchors.left: actions.left
             anchors.right: actions.right
         }
 
         StackLayout {
-            currentIndex: 0
+            currentIndex: actionCombo.currentIndex
             anchors.left: actions.left
             anchors.right: actions.right
             anchors.top: actionCombo.bottom
@@ -66,6 +66,10 @@ Item {
             id: parameters
 
             GenerateKeyParameters {
+            }
+
+            CreateStackParameters {
+
             }
 
         }

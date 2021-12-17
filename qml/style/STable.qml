@@ -28,6 +28,7 @@ Item {
         delegate: Rectangle {
             color: Constants.accentColor
             implicitHeight: 20
+            radius: 1
 
             SText {
                 anchors.left: parent.left

@@ -10,7 +10,7 @@ RoundButton {
         opacity: enabled ? 1 : 0.3
         color: pressed ? Constants.darkAccentColor : Constants.accentColor
         border.width: 0
-        radius: 0
+        radius: 1
     }
     icon.color: checked || pressed ? Constants.iconColor :  Constants.iconColorInvert
 }

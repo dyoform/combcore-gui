@@ -28,7 +28,7 @@ Item {
         }
 
 
-        Rectangle {
+        SRectangle {
             width: container.width-105
             height: 20
             color: Constants.highlightColor
@@ -44,7 +44,7 @@ Item {
             text: "Destination"
         }
 
-        Rectangle {
+        SRectangle {
             width: container.width-105
             height: 20
             color: Constants.highlightColor

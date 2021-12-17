@@ -24,7 +24,7 @@ Item {
             text: "Change"
         }
 
-        Rectangle {
+        SRectangle {
             width: container.width-105
             height: 20
             color: Constants.highlightColor
@@ -40,7 +40,7 @@ Item {
         }
 
 
-        Rectangle {
+        SRectangle {
             width: container.width-105
             height: 20
             color: Constants.highlightColor
@@ -56,7 +56,7 @@ Item {
             text: "Sum"
         }
 
-        Rectangle {
+        SRectangle {
             width: container.width-105
             height: 20
             color: Constants.highlightColor

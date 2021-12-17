@@ -26,5 +26,9 @@
         <file>style/SInputMono.qml</file>
         <file>components/GenerateKeyParameters.qml</file>
         <file>style/SList.qml</file>
+        <file>images/update.svg</file>
+        <file>style/SRectangle.qml</file>
+        <file>style/SStack.qml</file>
+        <file>components/CreateStackParameters.qml</file>
     </qresource>
 </RCC>

@@ -24,7 +24,7 @@ Item {
         }
 
 
-        Rectangle {
+        SRectangle {
             width: container.width-105
             height: 20
             color: Constants.highlightColor
@@ -48,7 +48,7 @@ Item {
             visible: thisAction.privateKey.length !== 0
         }
 
-        Rectangle {
+        SRectangle {
             width: container.width-105
             height: 20
             color: Constants.highlightColor
@@ -75,7 +75,7 @@ Item {
 
     }
 
-    Rectangle {
+    SRectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: goButton.top

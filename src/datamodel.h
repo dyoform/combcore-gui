@@ -44,8 +44,10 @@ public:
 public slots:
     void onFinish(QNetworkReply *rep) {
         if(rep->error() != 0) {
-            connected = false;
-            emit connectedChanged(false);
+            if(connected == true) {
+                emit connectedChanged(false);
+                connected = false;
+            }
             return;
         } else if (connected == false) {
             connected = true;

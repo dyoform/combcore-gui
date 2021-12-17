@@ -69,7 +69,14 @@ public slots:
             for(int i = 0; i < a.size(); i++) {
                 _privateKey.append(a[i].toString());
             }
+
             _stored = false;
+            for(int i = 0; i < _model->constructs.size(); i++) {
+                if(_model->constructs[i]->ID() == _publicKey) {
+                    _stored = true;
+                    break;
+                }
+            }
         }
 
         if(id == "loadKey") {
