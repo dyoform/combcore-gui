@@ -182,11 +182,13 @@ Item {
                 Constants.lightAccentColor = "#009800"
                 Constants.accentColor = "#008700"
                 Constants.darkAccentColor = "#006500"
+                Constants.title = qsTr("COMBCore Testnet")
             } else {
                 Constants.lighterAccentColor = "#d692d1"
                 Constants.lightAccentColor = "#af5bd9"
                 Constants.accentColor = "#a338d9"
                 Constants.darkAccentColor = "#7e00bd"
+                Constants.title = qsTr("COMBCore")
             }
         }
     }

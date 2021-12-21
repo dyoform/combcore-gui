@@ -18,4 +18,6 @@ QtObject {
     property color lightAccentColor: "#af5bd9"
     property color accentColor: "#a338d9"
     property color darkAccentColor: "#7e00bd"
+
+    property string title: qsTr("COMBCore")
 }

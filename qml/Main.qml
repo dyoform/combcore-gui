@@ -14,7 +14,7 @@ ApplicationWindow {
     height: 540
     visible: true
     color: Constants.backgroundColor
-    title: qsTr("COMBCore")
+    title: Constants.title
 
     NavBar {
         id: navBar
