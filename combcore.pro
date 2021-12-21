@@ -11,11 +11,14 @@ SOURCES += \
         src/constructs/key.cpp \
         src/constructs/stack.cpp \
         src/constructs/transaction.cpp \
+        src/controls/actions/commandaction.cpp \
         src/controls/actions/createstackaction.cpp \
+        src/controls/actions/createtransactionaction.cpp \
         src/controls/actions/generatekeyaction.cpp \
         src/controls/actionscreen.cpp \
         src/controls/overviewscreen.cpp \
         src/controls/screencontrols.cpp \
+        src/controls/settingsscreen.cpp \
         src/controls/walletscreen.cpp \
         src/datamodel.cpp \
         src/guimodel.cpp \
@@ -44,11 +47,14 @@ HEADERS += \
     src/constructs/key.h \
     src/constructs/stack.h \
     src/constructs/transaction.h \
+    src/controls/actions/commandaction.h \
     src/controls/actions/createstackaction.h \
+    src/controls/actions/createtransactionaction.h \
     src/controls/actions/generatekeyaction.h \
     src/controls/actionscreen.h \
     src/controls/overviewscreen.h \
     src/controls/screencontrols.h \
+    src/controls/settingsscreen.h \
     src/controls/walletscreen.h \
     src/datamodel.h \
     src/guimodel.h \

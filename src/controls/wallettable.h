@@ -17,6 +17,7 @@ public:
     void inject(DataModel* model) {
         _model = model;
         connect(_model, SIGNAL(dataChanged()), this, SLOT(updateData()));
+        connect(_model, SIGNAL(connectedChanged(bool)), this, SLOT(connectedChanged(bool)));
         rows =_model->constructs.size();
         updateData();
     }
@@ -40,7 +41,7 @@ public:
         case 0:
             return c->typeName();
         case 1:
-            return QString("");
+            return c->Active();
         case 2:
             return c->ID();
         }
@@ -73,7 +74,7 @@ private:
     DataModel* _model;
     int rows = 0;
     int _selectedRow=-1;
-    ConstructType _selectedType;
+    ConstructType _selectedType = TYPE_NONE;
     Construct* _selectedConstruct;
 public slots:
     void selectRow(int row);
@@ -83,6 +84,17 @@ public slots:
         beginResetModel();
         emit dataChanged(createIndex(0,0), createIndex(old, 3));
         endResetModel();
+    }
+    void connectedChanged(bool connected) {
+        if(!connected) {
+            _selectedConstruct = nullptr;
+            _selectedRow=-1;
+            _selectedType = TYPE_NONE;
+
+            emit selectedConstructChanged();
+            emit selectedRowChanged();
+            emit selectedTypeChanged();
+        };
     }
 signals:
     void selectedRowChanged();

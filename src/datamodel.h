@@ -10,6 +10,7 @@
 #include <QNetworkReply>
 #include <QHttpPart>
 #include <QFile>
+#include <QSettings>
 
 #include <memory>
 #include <vector>
@@ -24,10 +25,12 @@ class DataModel : public QObject {
     Q_OBJECT
 public:
     bool connected = false;
+    QString remoteAddress;
+    uint16_t remotePort;
     std::vector<std::unique_ptr<Construct>> constructs;
     std::vector<std::unique_ptr<Commit>> pending_commits;
     explicit DataModel() {
-        remote = QUrl("http://10.0.0.2:2211");
+        loadSettings();
         sync.setInterval(100);
         connect(&sync,SIGNAL(timeout()),this,SLOT(getStatus()));
         sync.start();
@@ -40,19 +43,34 @@ public:
         pending_commits.emplace_back(std::unique_ptr<Commit>(commit));
         emit dataChanged();
     }
+    bool haveConstruct(QString id) {
+        for(size_t i = 0; i < constructs.size(); i++) {
+            if(constructs[i]->ID() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+    void loadSettings() {
+        QSettings settings;
+        remoteAddress = settings.value("remoteAddress", "127.0.0.1").toString();
+        remotePort = settings.value("remotePort", QVariant(uint(2211))).toUInt();
+    }
+    void saveSettings() {
+        QSettings settings;
+        settings.setValue("remoteAddress", remoteAddress);
+        settings.setValue("remotePort", remotePort);
+    }
+    QString constructCommitCommand();
     void postRequest(QJsonObject req);
 public slots:
     void onFinish(QNetworkReply *rep) {
         if(rep->error() != 0) {
-            if(connected == true) {
-                emit connectedChanged(false);
-                connected = false;
-            }
+            setConnected(false);
             return;
-        } else if (connected == false) {
-            connected = true;
-            emit connectedChanged(true);
         }
+        setConnected(true);
+
         auto raw = rep->readAll();
         QJsonObject j = QJsonDocument().fromJson(raw).object();
         auto id = j["id"].toString();
@@ -60,7 +78,6 @@ public slots:
     }
     void getStatus() {
         QJsonObject j;
-        j["jsonrpc"] = "1.0";
         j["id"] = "getStatus";
         j["method"] = "Control.GetStatus";
         j["params"] = QJsonArray();
@@ -68,7 +85,6 @@ public slots:
     }
     void syncWallet() {
         QJsonObject j;
-        j["jsonrpc"] = "1.0";
         j["id"] = "getWallet";
         j["method"] = "Control.GetWallet";
         j["params"] = QJsonArray();
@@ -81,6 +97,12 @@ public slots:
 private:
     QTimer sync;
     QUrl remote;
+    void setConnected(bool nowConnected) {
+        if(connected != nowConnected) {
+            connected = nowConnected;
+            emit connectedChanged(nowConnected);
+        }
+    }
 signals:
     void dataChanged();
     void connectedChanged(bool);

@@ -10,7 +10,7 @@ import "components"
 
 ApplicationWindow {
     id: window
-    width: 980
+    width: 1000
     height: 540
     visible: true
     color: Constants.backgroundColor
@@ -35,6 +35,8 @@ ApplicationWindow {
         WalletScreen {
         }
         ActionsScreen {
+        }
+        SettingsScreen {
         }
     }
 

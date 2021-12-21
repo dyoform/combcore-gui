@@ -25,5 +25,5 @@ RoundButton {
         border.width: 0
         radius: 0
     }
-    icon.color: checked || pressed ? Constants.iconColor :  Constants.iconColorInvert
+    icon.color: checked || pressed ? Constants.lighterAccentColor:  Constants.iconColor
 }

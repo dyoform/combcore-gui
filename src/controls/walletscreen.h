@@ -36,7 +36,26 @@ public:
         QString source = tx["Source"].toString();
         QString destination = tx["Destination"].toString();
         QString id = tx["ID"].toString();
-        _model->addConstruct(new Transaction(source, destination, id));
+        bool active = tx["Active"].toBool(false);
+        QStringList signature;
+        auto a = tx["Signature"].toArray();
+        for(int i = 0; i < a.size(); i++) {
+            signature.append(a[i].toString());
+        }
+        _model->addConstruct(new Transaction(source, destination, signature, active, id));
+
+        QJsonObject j;
+        j["id"] = "checkTransactionSignature";
+        j["method"] = "Control.GetMissingCommits";
+        QJsonObject k;
+        QJsonArray s;
+        for(int i = 0; i < signature.size(); i++) {
+            s.append(signature[i]);
+        }
+        QJsonArray p;
+        p.append(s);
+        j["params"] = p;
+        _model->postRequest(j);
     }
     void processConstructs(QJsonObject wallet) {
         _model->constructs.clear();
@@ -59,10 +78,11 @@ public:
     }
 public slots:
     void gotData(QString id, QJsonObject data) {
-        if(id != "getWallet" && id != "loadWallet" && id != "saveWallet") {
+        if(id != "getWallet" && id != "loadWallet" && id != "saveWallet" && id != "checkTransactionSignature") {
             return;
         }
         if(data["error"].isString() && data["error"].toString() != "") {
+            qInfo() << data["error"].toString();
             return;
         }
 
@@ -78,17 +98,34 @@ public slots:
         if(id == "saveWallet") {
             actuallySaveWallet(_savePath, data["result"].toString());
         }
+
+        if (id == "checkTransactionSignature") {
+            auto missing = data["result"].toArray();
+            for(int i = 0; i < missing.size(); i++) {
+                QString commit = missing[i].toString();
+                bool have = false;
+                for(int k = 0; k < _model->pending_commits.size(); k++) {
+                    if(commit == _model->pending_commits[k]->ID()){
+                        have = true;
+                    }
+                }
+                if(!have) {
+                    Commit* c = new Commit(TYPE_SIGNATURE, commit);
+                    _model->addCommit(c);
+                }
+            }
+        }
     }
     void connectedChanged(bool connected) {
         if(connected) {
             getWallet();
         } else {
             _model->constructs.clear();
+            _model->pending_commits.clear();
             _model->update();
         }
     }
     void loadWallet(QUrl path) {
-        qInfo() << path;
         QFile file(path.toLocalFile());
             if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
                 return;
@@ -96,7 +133,6 @@ public slots:
         file.close();
 
         QJsonObject j;
-        j["jsonrpc"] = "1.0";
         j["id"] = "loadWallet";
         j["method"] = "Control.LoadWallet";
         QJsonArray p;
@@ -108,7 +144,6 @@ public slots:
         _savePath = path.toLocalFile();
 
         QJsonObject j;
-        j["jsonrpc"] = "1.0";
         j["id"] = "saveWallet";
         j["method"] = "Control.SaveWallet";
         j["params"] = QJsonArray();
@@ -116,7 +151,6 @@ public slots:
     }
     void getWallet() {
         QJsonObject j;
-        j["jsonrpc"] = "1.0";
         j["id"] = "getWallet";
         j["method"] = "Control.GetWallet";
         j["params"] = QJsonArray();

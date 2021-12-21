@@ -28,7 +28,6 @@ public:
 public slots:
     void generateNew() {
         QJsonObject j;
-        j["jsonrpc"] = "1.0";
         j["id"] = "generateKey";
         j["method"] = "Control.GenerateKey";
         j["params"] = QJsonArray();
@@ -36,7 +35,6 @@ public slots:
     }
     void saveKey() {
         QJsonObject j;
-        j["jsonrpc"] = "1.0";
         j["id"] = "loadKey";
         j["method"] = "Control.LoadKey";
         QJsonObject k;
@@ -70,13 +68,7 @@ public slots:
                 _privateKey.append(a[i].toString());
             }
 
-            _stored = false;
-            for(int i = 0; i < _model->constructs.size(); i++) {
-                if(_model->constructs[i]->ID() == _publicKey) {
-                    _stored = true;
-                    break;
-                }
-            }
+            _stored = _model->haveConstruct(_publicKey);
         }
 
         if(id == "loadKey") {

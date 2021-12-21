@@ -137,6 +137,30 @@ Item {
             text: "Pending Commits"
             font.bold: true
         }
+
+        RoundButton {
+            anchors.right: pendingHeader.right
+            anchors.rightMargin: 5
+            anchors.top: pendingHeader.top
+            anchors.topMargin: 5
+            background: Rectangle {
+                implicitWidth: 20
+                implicitHeight: 20
+                opacity: enabled ? 1 : 0.3
+                color: parent.pressed ? Constants.darkAccentColor : Constants.accentColor
+                border.width: 0
+                radius: 5
+            }
+            icon.height: 15
+            icon.width: 15
+            padding: 0
+            icon.source: "qrc:/images/special.svg"
+            icon.color: "transparent"
+
+            onPressed: {
+                screen.getCommand()
+            }
+        }
     }
 
     STable {
@@ -144,9 +168,27 @@ Item {
         anchors.margins: 5
         anchors.topMargin: 10
         widthProvider: function(c) {
-            return [pending.width-110 < 0 ? 0 : pending.width-110, 100][c]
+            return [pending.width-120 < 0 ? 0 : pending.width-120, 110][c]
         }
         model: screen.pendingTable
+    }
+
+    Connections {
+        target: screen
+        function onNetworkChanged() {
+            console.log("network changed to ", screen.network)
+            if(screen.network === "testnet") {
+                Constants.lighterAccentColor = "#2fc164"
+                Constants.lightAccentColor = "#009800"
+                Constants.accentColor = "#008700"
+                Constants.darkAccentColor = "#006500"
+            } else {
+                Constants.lighterAccentColor = "#d692d1"
+                Constants.lightAccentColor = "#af5bd9"
+                Constants.accentColor = "#a338d9"
+                Constants.darkAccentColor = "#7e00bd"
+            }
+        }
     }
 
 }

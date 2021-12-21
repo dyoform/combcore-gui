@@ -30,5 +30,12 @@
         <file>style/SRectangle.qml</file>
         <file>style/SStack.qml</file>
         <file>components/CreateStackParameters.qml</file>
+        <file>components/CreateTransactionParameters.qml</file>
+        <file>components/SettingsScreen.qml</file>
+        <file>images/true.svg</file>
+        <file>images/false.svg</file>
+        <file>images/special.svg</file>
+        <file>components/CommandParameters.qml</file>
+        <file>style/STextMonoMulti.qml</file>
     </qresource>
 </RCC>

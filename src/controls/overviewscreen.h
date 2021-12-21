@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <qqml.h>
+#include <QClipboard>
+#include <QGuiApplication>
 
 #include "datamodel.h"
 #include "pendingtable.h"
@@ -17,6 +19,7 @@ class OverviewScreen : public QObject
     Q_PROPERTY(QString commits READ commits NOTIFY changed)
     Q_PROPERTY(QString status READ status NOTIFY changed)
     Q_PROPERTY(QString btcStatus READ btcStatus NOTIFY changed)
+    Q_PROPERTY(QString network READ network NOTIFY networkChanged)
     QML_ELEMENT
 public:
     explicit OverviewScreen(QObject *parent = nullptr);
@@ -47,6 +50,7 @@ public:
             return QString("Idle");
         }
     }
+    QString network() {return _network;}
 public slots:
     void gotData(QString id, QJsonObject data) {
         if(id != "getStatus") {
@@ -63,6 +67,10 @@ public slots:
             _btc_known_height = data["BTCKnownHeight"].toInt();
             _commits = data["Commits"].toInt();
             _status = data["Status"].toString();
+            if(data["Network"].toString() != _network) {
+                _network = data["Network"].toString();
+                emit networkChanged();
+            }
         }
 
         emit changed();
@@ -73,17 +81,23 @@ public slots:
         }
         emit changed();
     }
+    void getCommand() {
+        QClipboard *c = QGuiApplication::clipboard();
+        c->setText(_model->constructCommitCommand());
+    }
 private:
     uint64_t _comb_height = 0;
     uint64_t _btc_height = 0;
     uint64_t _btc_known_height = 0;
     uint64_t _commits = 0;
     QString _status = "Unknown";
+    QString _network = "mainnet";
     DataModel* _model;
     PendingTable _pendingTable;
 
 signals:
     void changed();
+    void networkChanged();
 };
 
 #endif // OVERVIEWSCREEN_H

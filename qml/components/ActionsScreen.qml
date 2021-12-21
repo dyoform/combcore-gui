@@ -52,7 +52,7 @@ Item {
         clip: true
         SComboBox {
             id: actionCombo
-            model: ["Generate Key", "Create Stack"]
+            model: ["Generate Key", "Create Stack", "Create Transaction", "Custom Command"]
             anchors.left: actions.left
             anchors.right: actions.right
         }
@@ -69,6 +69,12 @@ Item {
             }
 
             CreateStackParameters {
+
+            }
+            CreateTransactionParameters {
+
+            }
+            CommandParameters {
 
             }
 

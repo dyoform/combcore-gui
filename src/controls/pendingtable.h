@@ -14,10 +14,13 @@ class PendingTable : public QAbstractTableModel
 public:
     void inject(DataModel* model) {
         _model = model;
+        connect(_model, SIGNAL(dataChanged()), this, SLOT(updateData()));
+        rows =_model->pending_commits.size();
+        updateData();
     }
     int rowCount(const QModelIndex & = QModelIndex()) const override
     {
-        return _model->pending_commits.size();
+        return rows;
     }
 
     int columnCount(const QModelIndex & = QModelIndex()) const override
@@ -51,8 +54,16 @@ public:
 private:
     DataModel* _model;
     int _selectedRow;
+    int rows = 0;
 public slots:
     void selectRow(int row);
+    void updateData() {
+        int old = rows;
+        rows = _model->pending_commits.size();
+        beginResetModel();
+        emit dataChanged(createIndex(0,0), createIndex(old, 2));
+        endResetModel();
+    }
 signals:
     void selectedRowChanged();
 };

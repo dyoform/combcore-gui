@@ -48,7 +48,6 @@ public slots:
     void createStack() {
         _error = "";
         QJsonObject j;
-        j["jsonrpc"] = "1.0";
         j["id"] = "constructStack";
         j["method"] = "Control.ConstructStack";
         QJsonObject k;
@@ -63,7 +62,6 @@ public slots:
     void loadStack() {
         _error = "";
         QJsonObject j;
-        j["jsonrpc"] = "1.0";
         j["id"] = "loadStack";
         j["method"] = "Control.LoadStack";
         QJsonObject k;
@@ -92,13 +90,7 @@ public slots:
             _sum = data["Sum"].toInt();
             _address = data["Address"].toString();
 
-            _stored = false;
-            for(int i = 0; i < _model->constructs.size(); i++) {
-                if(_model->constructs[i]->ID() == _address) {
-                    _stored = true;
-                    break;
-                }
-            }
+            _stored = _model->haveConstruct(_address);
         }
 
         if(id == "loadStack") {

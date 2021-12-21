@@ -54,12 +54,25 @@ Item {
             }
         }
 
+        SText {
+            width: 100
+            height: 20
+            text: "Signature"
+        }
+
+        SList {
+            id: signature
+            width: container.width-105
+            height: 200
+        }
+
         Connections {
             target: table
             function onSelectedConstructChanged() {
                 if(table.selectedType == 3) {
                     destination.text = table.selectedConstruct.destination
                     source.text = table.selectedConstruct.source
+                    signature.model = table.selectedConstruct.signature
                 }
             }
         }

@@ -22,6 +22,7 @@ public:
     ConstructType type() {return _type;}
     QString typeName() {return ConstructTypeNames[_type];}
     virtual QString ID() {return "";}
+    virtual QString Active() {return "";}
 protected:
     ConstructType _type = TYPE_NONE;
 
