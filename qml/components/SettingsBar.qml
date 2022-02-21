@@ -49,6 +49,17 @@ SMenuBar {
     }
     SMenu {
         title: qsTr("Help")
-        Action { text: qsTr("Empty");}
+        Action {
+            text: qsTr("COMBCore Info");
+            onTriggered: {
+                GUI.openURL("https://github.com/dyoform/combcore/wiki")
+            }
+        }
+        Action {
+            text: qsTr("Haircomb Community");
+            onTriggered: {
+                GUI.openURL("https://21Teeth.org")
+            }
+        }
     }
 }

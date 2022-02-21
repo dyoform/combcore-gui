@@ -3,6 +3,7 @@
 
 #include <qqml.h>
 #include <QAbstractTableModel>
+#include <QtGlobal>
 #include "datamodel.h"
 
 class WalletTable : public QAbstractTableModel
@@ -82,8 +83,10 @@ public slots:
         int old = rows;
         rows = _model->constructs.size();
         beginResetModel();
-        emit dataChanged(createIndex(0,0), createIndex(old, 3));
+        //emit dataChanged(createIndex(0,0), createIndex(rows, 3));
         endResetModel();
+
+        selectRow(qMin(_selectedRow, rows));
     }
     void connectedChanged(bool connected) {
         if(!connected) {

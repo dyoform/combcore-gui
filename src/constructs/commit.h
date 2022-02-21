@@ -5,10 +5,9 @@
 enum CommitType {
     TYPE_UNKNOWN,
     TYPE_SIGNATURE,
-    TYPE_DECISION,
     TYPE_CLAIM
 };
-const QString CommitTypeNames[] = {"Unknown", "Signature", "Decision", "Claim"};
+const QString CommitTypeNames[] = {"Unknown", "Signature", "Claim"};
 
 class Commit : public QObject
 {
@@ -17,6 +16,15 @@ public:
     explicit Commit(CommitType type, QString address) {
         _type = type;
         _address = address;
+    }
+    bool operator==(const Commit& c) {
+        if(c._address != _address) {
+            return false;
+        }
+        if(c._type != _type) {
+            return false;
+        }
+        return true;
     }
     CommitType type() {return _type;}
     QString typeName() {return CommitTypeNames[_type];}

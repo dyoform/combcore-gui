@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QPoint>
+#include <QDesktopServices>
+#include <QUrl>
 #include <qqml.h>
 #include "screencontrols.h"
 #include "actionscreen.h"
@@ -39,7 +41,10 @@ private:
     ActionScreen _actionScreen;
     WalletScreen _walletScreen;
     SettingsScreen _settingsScreen;
-signals:
+public slots:
+    void openURL(QString url) {
+        QDesktopServices::openUrl(QUrl(url, QUrl::TolerantMode));
+    }
 };
 
 #endif // GUIMODEL_H

@@ -1,7 +1,7 @@
 #include "wallettable.h"
 
 void WalletTable::selectRow(int row) {
-    if(row == _selectedRow || row < -1 || row >= _model->constructs.size())
+    if(row < -1 || row >= _model->constructs.size())
         return;
     _selectedRow = row;
 

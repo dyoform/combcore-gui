@@ -53,15 +53,16 @@ public:
     QString network() {return _network;}
 public slots:
     void gotData(QString id, QJsonObject data) {
-        if(id != "getStatus") {
+        if(id != "getStatus" && id != "checkClaim" && id != "checkSignature" && id != "getCommits") {
             return;
         }
         if(data["error"].isString() && data["error"].toString() != "") {
+            qInfo() << data["error"].toString();
             return;
         }
-        data = data["result"].toObject();
 
         if(id == "getStatus") {
+            data = data["result"].toObject();
             _comb_height = data["COMBHeight"].toInt();
             _btc_height = data["BTCHeight"].toInt();
             _btc_known_height = data["BTCKnownHeight"].toInt();
@@ -73,6 +74,31 @@ public slots:
             }
         }
 
+        if(id == "checkClaim") {
+            auto a = data["result"].toArray();
+            for(int i = 0; i < a.size(); i++) {
+                _model->addCommit(new Commit(TYPE_CLAIM, a[i].toString()));
+            }
+        }
+
+        if(id == "checkSignature") {
+            auto a = data["result"].toArray();
+            for(int i = 0; i < a.size(); i++) {
+                _model->addCommit(new Commit(TYPE_SIGNATURE, a[i].toString()));
+            }
+        }
+
+        if(id == "getCommits") {
+            auto a = data["result"].toArray();
+            QStringList commits;
+            for(int i = 0; i < a.size(); i++) {
+                commits.append(a[i].toString());
+            }
+            copyCommand(commits);
+        }
+
+
+
         emit changed();
     }
     void connectedChanged(bool connected) {
@@ -81,9 +107,28 @@ public slots:
         }
         emit changed();
     }
+
     void getCommand() {
+        QJsonObject j;
+        j["id"] = "getCommits";
+        j["method"] = "Control.CommitAddresses";
+        QJsonArray a;
+        QJsonArray b;
+        for(int i = 0; i < _model->pending_commits.size(); i++) {
+            b.append(_model->pending_commits[i]->ID());
+        }
+        a.append(b);
+        j["params"] = a;
+        _model->postRequest(j);
+    }
+
+    void clear() {
+        _model->clearCommits();
+    }
+
+    void copyCommand(QStringList commits) {
         QClipboard *c = QGuiApplication::clipboard();
-        c->setText(_model->constructCommitCommand());
+        c->setText(_model->constructCommitCommand(commits));
     }
 private:
     uint64_t _comb_height = 0;

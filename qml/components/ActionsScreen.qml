@@ -52,7 +52,7 @@ Item {
         clip: true
         SComboBox {
             id: actionCombo
-            model: ["Generate Key", "Create Stack", "Create Transaction", "Custom Command"]
+            model: ["Generate Key", "Create Stack", "Create Transaction", "Commit Address", "Generate Decider", "Sign Decider", "Create Merkle Segment", "Decide Merkle Segment", "Custom Command"]
             anchors.left: actions.left
             anchors.right: actions.right
         }
@@ -72,6 +72,21 @@ Item {
 
             }
             CreateTransactionParameters {
+
+            }
+            CommitAddressParameters {
+
+            }
+            GenerateDeciderParameters {
+
+            }
+            SignDeciderParameters {
+
+            }
+            CreateMerkleSegmentParameters{
+
+            }
+            DecideMerkleSegmentParameters{
 
             }
             CommandParameters {

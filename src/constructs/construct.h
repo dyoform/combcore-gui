@@ -8,9 +8,11 @@ enum ConstructType {
     TYPE_NONE,
     TYPE_KEY,
     TYPE_STACK,
-    TYPE_TRANSACTION
+    TYPE_TRANSACTION,
+    TYPE_DECIDER,
+    TYPE_MERKLE_SEGMENT
 };
-const QString ConstructTypeNames[] = {"None", "Key", "Stack", "Transaction"};
+const QString ConstructTypeNames[] = {"None", "Key", "Stack", "Transaction", "Decider", "Merkle Segment"};
 
 class Construct : public QObject
 {

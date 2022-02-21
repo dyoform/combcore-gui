@@ -122,6 +122,19 @@ Item {
                         leftPadding: 5
                     }
                 }
+
+                SText {
+                    width: 100
+                    height: 20
+                    text: "Log"
+                }
+
+                SList {
+                    width: container.width-105
+                    id: log
+                    height: container.height - 50
+                    model: screen.output
+                }
             }
         }
     }

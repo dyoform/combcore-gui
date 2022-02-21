@@ -63,7 +63,7 @@ Item {
         SList {
             id: signature
             width: container.width-105
-            height: 200
+            height: 100
         }
 
         Connections {

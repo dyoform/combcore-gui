@@ -73,7 +73,7 @@ public slots:
 
         if(id == "loadKey") {
             _stored = true;
-            _model->syncWallet();
+            _model->getWallet();
         }
 
         emit changed();
@@ -83,7 +83,7 @@ private:
     QString _publicKey;
     QStringList _privateKey;
     QString _error;
-    bool _stored;
+    bool _stored = false;
 signals:
     void changed();
 };

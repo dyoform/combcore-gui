@@ -10,6 +10,7 @@ import "../"
 
 Item {
     property WalletTable table: GUI.wallet.walletTable
+    property bool hasBalance: true
     id: container
     clip: true
     Grid {
@@ -21,24 +22,8 @@ Item {
         SText {
             width: 100
             height: 20
-            text: "Public"
-        }
-
-
-        SRectangle {
-            width: container.width-105
-            height: 20
-            color: Constants.highlightColor
-            STextMono {
-                leftPadding: 5
-                id: publicKey
-            }
-        }
-
-        SText {
-            width: 100
-            height: 20
             text: "Balance"
+            visible: hasBalance
         }
 
         SRectangle {
@@ -49,13 +34,14 @@ Item {
                 leftPadding: 5
                 id: balance
             }
+            visible: hasBalance
         }
         Connections {
             target: table
             function onSelectedConstructChanged() {
                 if(table.selectedType == 1) {
-                    publicKey.text = table.selectedConstruct.publicKey
                     balance.text = table.selectedConstruct.balance
+                    hasBalance = !table.selectedConstruct.active
                 }
             }
         }

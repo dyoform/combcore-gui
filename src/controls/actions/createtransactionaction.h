@@ -103,7 +103,7 @@ public slots:
         }
 
         if(id == "loadTransaction") {
-            _model->syncWallet();
+            _model->getWallet();
             _stored = true;
         }
 
@@ -116,7 +116,7 @@ private:
     QStringList _signature;
     QString _id;
     QString _error;
-    bool _stored;
+    bool _stored = false;
 signals:
     void changed();
 };

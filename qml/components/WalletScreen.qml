@@ -103,7 +103,7 @@ Item {
 
             SText {
                 padding: 6
-                text: ["None", "Key", "Stack", "Transaction"][thisScreen.walletTable.selectedType]
+                text: ["None", "Key", "Stack", "Transaction", "Decider", "Merkle Segment"][thisScreen.walletTable.selectedType]
                 font.bold: true
             }
         }
@@ -116,11 +116,18 @@ Item {
             currentIndex: thisScreen.walletTable.selectedType-1
 
             KeyInfo {
-
             }
+
             StackInfo {
             }
+
             TxInfo {
+            }
+
+            DeciderInfo {
+            }
+
+            MerkleInfo {
             }
 
         }

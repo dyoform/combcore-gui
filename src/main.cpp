@@ -1,5 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QProcess>
 #include "guimodel.h"
 #include "datamodel.h"
 #include <stdlib.h>
@@ -13,7 +14,13 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
+    QString program = "./combcore";
+    QProcess *daemon = new QProcess(&app);
+    daemon->start(program);
+    QObject::connect(&app, &QGuiApplication::aboutToQuit, daemon, [daemon]() {daemon->terminate();});
+
     DataModel* model = new DataModel();
+    QObject::connect(daemon, &QProcess::readyReadStandardOutput, model, [model, daemon]() {model->appendOutput(daemon->readAllStandardOutput());});
 
     QScopedPointer<GUIModel> guiPointer(new GUIModel(model));
 

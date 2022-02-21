@@ -37,5 +37,13 @@
         <file>images/special.svg</file>
         <file>components/CommandParameters.qml</file>
         <file>style/STextMonoMulti.qml</file>
+        <file>components/GenerateDeciderParameters.qml</file>
+        <file>components/DeciderInfo.qml</file>
+        <file>components/CreateMerkleSegmentParameters.qml</file>
+        <file>components/MerkleInfo.qml</file>
+        <file>components/SignDeciderParameters.qml</file>
+        <file>components/DecideMerkleSegmentParameters.qml</file>
+        <file>components/CommitAddressParameters.qml</file>
+        <file>images/trash.svg</file>
     </qresource>
 </RCC>

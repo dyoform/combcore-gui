@@ -134,12 +134,12 @@ Item {
 
         SText {
             padding: 6
-            text: "Pending Commits"
+            text: "Pending"
             font.bold: true
         }
 
         RoundButton {
-            anchors.right: pendingHeader.right
+            anchors.right: clearButton.left
             anchors.rightMargin: 5
             anchors.top: pendingHeader.top
             anchors.topMargin: 5
@@ -159,6 +159,31 @@ Item {
 
             onPressed: {
                 screen.getCommand()
+            }
+        }
+
+        RoundButton {
+            anchors.right: pendingHeader.right
+            anchors.rightMargin: 5
+            anchors.top: pendingHeader.top
+            anchors.topMargin: 5
+            id: clearButton
+            background: Rectangle {
+                implicitWidth: 20
+                implicitHeight: 20
+                opacity: enabled ? 1 : 0.3
+                color: parent.pressed ? Constants.darkAccentColor : Constants.accentColor
+                border.width: 0
+                radius: 5
+            }
+            icon.height: 15
+            icon.width: 15
+            padding: 0
+            icon.source: "qrc:/images/trash.svg"
+            icon.color: "transparent"
+
+            onPressed: {
+                screen.clear()
             }
         }
     }
@@ -181,12 +206,14 @@ Item {
                 Constants.lighterAccentColor = "#2fc164"
                 Constants.lightAccentColor = "#009800"
                 Constants.accentColor = "#008700"
+                Constants.dimAccentColor = "#00c943"
                 Constants.darkAccentColor = "#006500"
                 Constants.title = qsTr("COMBCore Testnet")
             } else {
                 Constants.lighterAccentColor = "#d692d1"
                 Constants.lightAccentColor = "#af5bd9"
                 Constants.accentColor = "#a338d9"
+                Constants.dimAccentColor = "#9100d9"
                 Constants.darkAccentColor = "#7e00bd"
                 Constants.title = qsTr("COMBCore")
             }

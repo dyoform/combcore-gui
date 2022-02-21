@@ -19,16 +19,16 @@ void DataModel::postRequest(QJsonObject req)
     mgr->post(request, postData);
 }
 
-QString DataModel::constructCommitCommand() {
-    QString c = "bitcoin-cli fundrawtransaction '%1'";
+QString DataModel::constructCommitCommand(QStringList commits) {
+    QString c = "%1";
 
-    if(pending_commits.size() > 255) {
-        return "varint not implemented yet";
+    if(commits.size() > 255) {
+        return "varint not implemented";
     }
 
-    QString raw = "0100000000" + QString("%1").arg(pending_commits.size(), 2, 16, QLatin1Char('0'));
-    for(size_t i = 0; i < pending_commits.size(); i++) {
-        raw += QString("4A01000000000000220020") + pending_commits[i]->ID();
+    QString raw = "0100000000" + QString("%1").arg(commits.size(), 2, 16, QLatin1Char('0'));
+    for(size_t i = 0; i < commits.size(); i++) {
+        raw += QString("4A01000000000000220020") + commits[i];
     }
     raw += "00000000";
 

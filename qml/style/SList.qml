@@ -17,6 +17,10 @@ Item {
 
         model: parent.model
 
+        onCountChanged: {
+           positionViewAtEnd()
+        }
+
         delegate: Rectangle {
             color: index % 2 == 0 ? Constants.highlightColor : Constants.seperatorColor
             implicitHeight: 20

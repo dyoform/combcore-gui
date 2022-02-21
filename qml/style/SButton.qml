@@ -4,11 +4,12 @@ import "../"
 
 RoundButton {
     id: button
+    hoverEnabled: true
     background: Rectangle {
         implicitWidth: 40
         implicitHeight: 40
         opacity: enabled ? 1 : 0.3
-        color: pressed ? Constants.darkAccentColor : Constants.accentColor
+        color: button.hovered ? Constants.dimAccentColor : (pressed ? Constants.darkAccentColor : Constants.accentColor)
         border.width: 0
         radius: 1
     }

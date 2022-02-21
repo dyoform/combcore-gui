@@ -16,13 +16,16 @@ RoundButton {
     display: AbstractButton.IconOnly
     checked: controls.activeScreen === guiScreen
     onPressed: controls.activeScreen = guiScreen
+    id: button
 
+    hoverEnabled: true
     background: Rectangle {
         implicitWidth: 50
         implicitHeight: 50
         opacity: enabled ? 1 : 0.3
-        color: pressed ? Constants.darkAccentColor : (checked ? Constants.accentColor : Constants.buttonColor)
+        color: pressed ? Constants.darkAccentColor : (checked ? Constants.accentColor : (button.hovered ? Constants.darkStructureColor : Constants.buttonColor))
         border.width: 0
+
         radius: 0
     }
     icon.color: checked || pressed ? Constants.lighterAccentColor:  Constants.iconColor

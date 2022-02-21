@@ -94,7 +94,7 @@ public slots:
         }
 
         if(id == "loadStack") {
-            _model->syncWallet();
+            _model->getWallet();
             _stored = true;
         }
 
@@ -104,10 +104,10 @@ private:
     DataModel* _model;
     QString _destination;
     QString _change;
-    uint64_t _sum;
+    uint64_t _sum = 0;
     QString _address;
     QString _error;
-    bool _stored;
+    bool _stored = false;
 signals:
     void changed();
 };

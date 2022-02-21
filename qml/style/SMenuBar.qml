@@ -14,7 +14,7 @@ MenuBar {
                 text: menuBarItem.text
                 font: menuBarItem.font
                 opacity: enabled ? 1.0 : 0.3
-                color: menuBarItem.hovered || menuBarItem.highlighted  ? Constants.darkTextColor : Constants.textColor
+                color: menuBarItem.hovered  ? Constants.darkTextColor : Constants.textColor
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
                 elide: Text.ElideRight
@@ -24,7 +24,7 @@ MenuBar {
                 implicitWidth: menuBarSize
                 implicitHeight: menuBarSize
                 opacity: enabled ? 1 : 0.3
-                color: menuBarItem.hovered || menuBarItem.highlighted ?  Constants.accentColor : "transparent"
+                color: menuBarItem.hovered ?  Constants.accentColor : "transparent"
             }
     }
 

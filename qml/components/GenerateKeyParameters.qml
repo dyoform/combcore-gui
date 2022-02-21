@@ -27,7 +27,7 @@ Item {
         SRectangle {
             width: container.width-105
             height: 20
-            color: Constants.highlightColor
+            color: Constants.dimHighlightColor
             STextMono {
                 anchors.fill: parent
                 text: thisAction.publicKey
@@ -51,7 +51,7 @@ Item {
         SRectangle {
             width: container.width-105
             height: 20
-            color: Constants.highlightColor
+            color: Constants.dimHighlightColor
             visible: thisAction.privateKey.length === 0
         }
 

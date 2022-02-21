@@ -14,5 +14,5 @@ TextField {
     wrapMode: Text.WordWrap
     selectByMouse: true
     color: Constants.textColor
-    font.family: "Roboto Mono [GOOG]"
+    font.family: "Roboto Mono"
 }

@@ -20,6 +20,8 @@
 #include "key.h"
 #include "stack.h"
 #include "transaction.h"
+#include "decider.h"
+#include "merklesegment.h"
 
 class DataModel : public QObject {
     Q_OBJECT
@@ -27,21 +29,67 @@ public:
     bool connected = false;
     QString remoteAddress;
     uint16_t remotePort;
+    QStringList output;
     std::vector<std::unique_ptr<Construct>> constructs;
     std::vector<std::unique_ptr<Commit>> pending_commits;
     explicit DataModel() {
         loadSettings();
-        sync.setInterval(100);
-        connect(&sync,SIGNAL(timeout()),this,SLOT(getStatus()));
-        sync.start();
+        statusSync.setInterval(100);
+        walletSync.setInterval(5000);
+        connect(&statusSync,SIGNAL(timeout()),this,SLOT(getStatus()));
+        connect(&walletSync,SIGNAL(timeout()),this,SLOT(getWallet()));
+        statusSync.start();
+        walletSync.start();
     }
     void addConstruct(Construct* construct) {
         constructs.emplace_back(std::unique_ptr<Construct>(construct));
         emit dataChanged();
     }
-    void addCommit(Commit* commit) {
-        pending_commits.emplace_back(std::unique_ptr<Commit>(commit));
+
+    void appendOutput(QString out) {
+        output.append(out.trimmed().split("\n", Qt::SkipEmptyParts));
         emit dataChanged();
+    }
+
+    void checkSignature(QStringList signature) {
+        QJsonObject j;
+        j["id"] = "checkSignature";
+        j["method"] = "Control.CheckAddresses";
+        QJsonArray a;
+        QJsonArray b;
+        for(int i = 0; i < signature.length(); i++) {
+            b.append(signature[i]);
+        }
+        a.append(b);
+        j["params"] = a;
+        postRequest(j);
+    }
+
+    void checkClaim(QString address) {
+        QJsonObject j;
+        j["id"] = "checkClaim";
+        j["method"] = "Control.CheckAddresses";
+        QJsonArray a;
+        QJsonArray b;
+        b.append(address);
+        a.append(b);
+        j["params"] = a;
+        postRequest(j);
+    }
+
+
+    void addCommit(Commit* commit) {
+        for(int i = 0; i < pending_commits.size(); i++) {
+           if(*(pending_commits[i].get()) == *commit) {
+               return;
+           }
+        }
+         pending_commits.emplace_back(std::unique_ptr<Commit>(commit));
+        emit dataChanged();
+    }
+    void clearCommits() {
+        pending_commits.clear();
+        getWallet();
     }
     bool haveConstruct(QString id) {
         for(size_t i = 0; i < constructs.size(); i++) {
@@ -51,6 +99,8 @@ public:
         }
         return false;
     }
+
+
     void loadSettings() {
         QSettings settings;
         remoteAddress = settings.value("remoteAddress", "127.0.0.1").toString();
@@ -61,7 +111,7 @@ public:
         settings.setValue("remoteAddress", remoteAddress);
         settings.setValue("remotePort", remotePort);
     }
-    QString constructCommitCommand();
+    QString constructCommitCommand(QStringList commits);
     void postRequest(QJsonObject req);
 public slots:
     void onFinish(QNetworkReply *rep) {
@@ -83,7 +133,7 @@ public slots:
         j["params"] = QJsonArray();
         postRequest(j);
     }
-    void syncWallet() {
+    void getWallet() {
         QJsonObject j;
         j["id"] = "getWallet";
         j["method"] = "Control.GetWallet";
@@ -95,7 +145,8 @@ public slots:
     }
 
 private:
-    QTimer sync;
+    QTimer statusSync;
+    QTimer walletSync;
     QUrl remote;
     void setConnected(bool nowConnected) {
         if(connected != nowConnected) {

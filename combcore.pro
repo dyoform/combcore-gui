@@ -1,7 +1,10 @@
 QT += qml quick svg network
 QTPLUGIN += qsvg qsvgicon
 
+TARGET = combcore-qt
+
 CONFIG += c++11 qmltypes
+CONFIG += static
 QML_IMPORT_NAME = combcore
 QML_IMPORT_MAJOR_VERSION = 1
 
@@ -44,13 +47,20 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     src/constructs/commit.h \
     src/constructs/construct.h \
+    src/constructs/decider.h \
     src/constructs/key.h \
+    src/constructs/merklesegment.h \
     src/constructs/stack.h \
     src/constructs/transaction.h \
     src/controls/actions/commandaction.h \
+    src/controls/actions/commitaddressaction.h \
+    src/controls/actions/createmerklesegmentaction.h \
     src/controls/actions/createstackaction.h \
     src/controls/actions/createtransactionaction.h \
+    src/controls/actions/decidemerklesegmentaction.h \
+    src/controls/actions/generatedecideraction.h \
     src/controls/actions/generatekeyaction.h \
+    src/controls/actions/signdecideraction.h \
     src/controls/actionscreen.h \
     src/controls/overviewscreen.h \
     src/controls/screencontrols.h \

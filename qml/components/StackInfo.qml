@@ -10,6 +10,7 @@ import "../"
 
 Item {
     property WalletTable table: GUI.wallet.walletTable
+    property bool hasBalance: true
     id: container
     clip: true
     Grid {
@@ -17,6 +18,24 @@ Item {
         padding: 5
         columns: 2
         spacing: 2
+
+        SText {
+            width: 100
+            height: 20
+            text: "Balance"
+            visible: hasBalance
+        }
+
+        SRectangle {
+            width: container.width-105
+            height: 20
+            color: Constants.highlightColor
+            visible: hasBalance
+            STextMono {
+                leftPadding: 5
+                id: balance
+            }
+        }
 
         SText {
             width: 100
@@ -72,6 +91,8 @@ Item {
                     destination.text = table.selectedConstruct.destination
                     change.text = table.selectedConstruct.change
                     sum.text = table.selectedConstruct.sum
+                    balance.text = table.selectedConstruct.balance
+                    hasBalance = !table.selectedConstruct.active
                 }
             }
         }

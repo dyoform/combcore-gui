@@ -5,17 +5,19 @@ ComboBox {
     id: control
 
     delegate: ItemDelegate {
+        id: item
         width: control.width
         height: 30
+        hoverEnabled: true
         contentItem: Text {
             text: modelData
-            color: parent.pressed ? Constants.darkTextColor : Constants.textColor
+            color: Constants.textColor
             font: control.font
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
         }
         background: Rectangle {
-            color: control.highlightedIndex === index ? (parent.pressed ? Constants.iconColor : Constants.accentColor) : Constants.menuColor
+            color: item.highlighted || control.highlightedIndex === index ? Constants.accentColor : Constants.menuColor
         }
         highlighted: control.highlightedIndex === index
     }
@@ -41,7 +43,7 @@ ComboBox {
             context.lineTo(width, 0);
             context.lineTo(width / 2, height);
             context.closePath();
-            context.fillStyle = control.popup.visible ? Constants.iconColor : Constants.accentColor;
+            context.fillStyle = control.popup.visible ? Constants.lighterAccentColor : Constants.accentColor;
             context.fill();
         }
     }

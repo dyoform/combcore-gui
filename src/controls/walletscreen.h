@@ -23,14 +23,17 @@ public:
     void processKey(QJsonObject key) {
         QString publicKey = key["Public"].toString();
         int balance = key["Balance"].toInt();
-        _model->addConstruct(new Key(publicKey, balance));
+        bool active = key["Active"].toBool(false);
+        _model->addConstruct(new Key(publicKey, balance, active));
     }
     void processStack(QJsonObject stack) {
         QString destination = stack["Destination"].toString();
         QString change = stack["Change"].toString();
         QString address = stack["Address"].toString();
+        bool active = stack["Active"].toBool(false);
         int sum = stack["Sum"].toInt();
-        _model->addConstruct(new Stack(destination, change, sum, address));
+        int balance = stack["Balance"].toInt();
+        _model->addConstruct(new Stack(destination, change, sum, address, balance, active));
     }
     void processTransaction(QJsonObject tx) {
         QString source = tx["Source"].toString();
@@ -43,20 +46,52 @@ public:
             signature.append(a[i].toString());
         }
         _model->addConstruct(new Transaction(source, destination, signature, active, id));
-
-        QJsonObject j;
-        j["id"] = "checkTransactionSignature";
-        j["method"] = "Control.GetMissingCommits";
-        QJsonObject k;
-        QJsonArray s;
-        for(int i = 0; i < signature.size(); i++) {
-            s.append(signature[i]);
-        }
-        QJsonArray p;
-        p.append(s);
-        j["params"] = p;
-        _model->postRequest(j);
+        _model->checkSignature(signature);
     }
+    void processDecider(QJsonObject decider) {
+        QString id = decider["ID"].toString();
+        QStringList tips;
+
+        auto a = decider["Tips"].toArray();
+        for(int i = 0; i < a.size(); i++) {
+            tips.append(a[i].toString());
+        }
+        _model->addConstruct(new Decider(id, tips));
+    }
+    void processMerkleSegment(QJsonObject m) {
+        QString address = m["ID"].toString();
+        QString tip1 = m["Tips"].toArray()[0].toString();
+        QString tip2 = m["Tips"].toArray()[1].toString();
+        QString next = m["Next"].toString();
+        QString root = m["Root"].toString();
+
+        QString leaf = m["Leaf"].toString();
+        bool active = m["Active"].toBool();
+
+
+        QStringList tips;
+        auto a = m["Tips"].toArray();
+        for(int i = 0; i < a.size(); i++) {
+            tips.append(a[i].toString());
+        }
+
+        QStringList signature;
+        a = m["Signature"].toArray();
+        for(int i = 0; i < a.size(); i++) {
+            signature.append(a[i].toString());
+        }
+
+        QStringList branches;
+        a = m["Branches"].toArray();
+        for(int i = 0; i < a.size(); i++) {
+            branches.append(a[i].toString());
+        }
+        int balance = m["Balance"].toInt();
+
+        _model->addConstruct(new MerkleSegment(address, root, next, tips, leaf, signature, branches, balance, active));
+        _model->checkSignature(signature);
+    }
+
     void processConstructs(QJsonObject wallet) {
         _model->constructs.clear();
         if(wallet["Keys"].isArray()) {
@@ -74,11 +109,26 @@ public:
             for(int i = 0; i < txs.size(); i++)
                 processTransaction(txs[i].toObject());
         }
+        if(wallet["Deciders"].isArray()) {
+            QJsonArray deciders = wallet["Deciders"].toArray();
+            for(int i = 0; i < deciders.size(); i++)
+                processDecider(deciders[i].toObject());
+        }
+        if(wallet["Merkles"].isArray()) {
+            QJsonArray merkles = wallet["Merkles"].toArray();
+            for(int i = 0; i < merkles.size(); i++)
+                processMerkleSegment(merkles[i].toObject());
+        }
+        if(wallet["UnsignedMerkles"].isArray()) {
+            QJsonArray merkles = wallet["UnsignedMerkles"].toArray();
+            for(int i = 0; i < merkles.size(); i++)
+                processMerkleSegment(merkles[i].toObject());
+        }
         _model->update();
     }
 public slots:
     void gotData(QString id, QJsonObject data) {
-        if(id != "getWallet" && id != "loadWallet" && id != "saveWallet" && id != "checkTransactionSignature") {
+        if(id != "getWallet" && id != "loadWallet" && id != "saveWallet") {
             return;
         }
         if(data["error"].isString() && data["error"].toString() != "") {
@@ -97,23 +147,6 @@ public slots:
 
         if(id == "saveWallet") {
             actuallySaveWallet(_savePath, data["result"].toString());
-        }
-
-        if (id == "checkTransactionSignature") {
-            auto missing = data["result"].toArray();
-            for(int i = 0; i < missing.size(); i++) {
-                QString commit = missing[i].toString();
-                bool have = false;
-                for(int k = 0; k < _model->pending_commits.size(); k++) {
-                    if(commit == _model->pending_commits[k]->ID()){
-                        have = true;
-                    }
-                }
-                if(!have) {
-                    Commit* c = new Commit(TYPE_SIGNATURE, commit);
-                    _model->addCommit(c);
-                }
-            }
         }
     }
     void connectedChanged(bool connected) {

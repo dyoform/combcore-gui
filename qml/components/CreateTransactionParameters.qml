@@ -75,7 +75,7 @@ Item {
         SRectangle {
             width: container.width-105
             height: 20
-            color: Constants.highlightColor
+            color: Constants.dimHighlightColor
             visible: thisAction.signature.length === 0
         }
 
