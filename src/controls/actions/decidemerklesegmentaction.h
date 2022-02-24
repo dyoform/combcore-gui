@@ -102,12 +102,7 @@ public slots:
         signature.append(signature1());
         signature.append(signature2());
         k["signature"] = signature;
-        QJsonArray branches;
-        QStringList b = _branchesString.split(", ");
-        for(int i = 0; i < b.length(); i++) {
-            branches.append(b[i]);
-        }
-        k["branches"] = branches;
+        k["branches"] = _branchesString;
         QJsonArray a;
         a.append(k);
         j["params"] = a;
