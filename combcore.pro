@@ -1,6 +1,6 @@
 QT += qml quick svg network
 QTPLUGIN += qsvg qsvgicon
-
+RC_ICONS = combcore.ico
 TARGET = combcore-qt
 
 CONFIG += c++11 qmltypes
@@ -70,3 +70,5 @@ HEADERS += \
     src/guimodel.h \
     src/controls/pendingtable.h \
     src/controls/wallettable.h
+
+DISTFILES +=

@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QProcess>
+#include <QFontDatabase>
 #include "guimodel.h"
 #include "datamodel.h"
 #include <stdlib.h>
@@ -13,6 +14,13 @@ int main(int argc, char *argv[])
 #endif
 
     QGuiApplication app(argc, argv);
+
+    QFontDatabase::addApplicationFont(":/font/RobotoMono-Regular.ttf");
+    qint32 fontId = QFontDatabase::addApplicationFont(":/font/Cantarell-Regular.ttf");
+    QStringList fontList = QFontDatabase::applicationFontFamilies(fontId);
+
+    QString family = fontList.first();
+    QGuiApplication::setFont(QFont(family));
 
     QString program = "./combcore";
     QProcess *daemon = new QProcess(&app);

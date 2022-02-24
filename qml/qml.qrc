@@ -45,5 +45,7 @@
         <file>components/DecideMerkleSegmentParameters.qml</file>
         <file>components/CommitAddressParameters.qml</file>
         <file>images/trash.svg</file>
+        <file>font/Cantarell-Regular.ttf</file>
+        <file>font/RobotoMono-Regular.ttf</file>
     </qresource>
 </RCC>
