@@ -155,7 +155,7 @@ Item {
             icon.width: 15
             padding: 0
             icon.source: "qrc:/images/special.svg"
-            icon.color: "transparent"
+            icon.color: Constants.lighterAccentColor
 
             onPressed: {
                 screen.getCommand()
@@ -180,7 +180,7 @@ Item {
             icon.width: 15
             padding: 0
             icon.source: "qrc:/images/trash.svg"
-            icon.color: "transparent"
+            icon.color: Constants.lighterAccentColor
 
             onPressed: {
                 screen.clear()

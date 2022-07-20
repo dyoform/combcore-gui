@@ -1,5 +1,4 @@
 QT += qml quick svg network
-QTPLUGIN += qsvg qsvgicon
 RC_ICONS = combcore.ico
 TARGET = combcore-qt
 

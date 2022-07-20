@@ -22,13 +22,17 @@ int main(int argc, char *argv[])
     QString family = fontList.first();
     QGuiApplication::setFont(QFont(family));
 
+    DataModel* model = new DataModel();
+
     QString program = "./combcore";
     QProcess *daemon = new QProcess(&app);
     daemon->start(program);
-    QObject::connect(&app, &QGuiApplication::aboutToQuit, daemon, [daemon]() {daemon->terminate();});
-
-    DataModel* model = new DataModel();
-    QObject::connect(daemon, &QProcess::readyReadStandardOutput, model, [model, daemon]() {model->appendOutput(daemon->readAllStandardOutput());});
+    if(daemon->error() != QProcess::FailedToStart) {
+        QObject::connect(&app, &QGuiApplication::aboutToQuit, daemon, [daemon]() {daemon->terminate();});
+        QObject::connect(daemon, &QProcess::readyReadStandardOutput, model, [model, daemon]() {model->appendOutput(daemon->readAllStandardOutput());});
+    } else {
+        model->appendOutput("Unavailable. Daemon not a subprocess.");
+    }
 
     QScopedPointer<GUIModel> guiPointer(new GUIModel(model));
 

@@ -59,7 +59,7 @@ Item {
                 icon.width: 15
                 padding: 0
                 icon.source: "qrc:/images/update.svg"
-                icon.color: "transparent"
+                icon.color: Constants.lighterAccentColor
 
                 onPressed: {
                     GUI.wallet.getWallet()

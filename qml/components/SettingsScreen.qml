@@ -58,7 +58,7 @@ Item {
                 icon.width: 15
                 padding: 0
                 icon.source: "qrc:/images/true.svg"
-                icon.color: "transparent"
+                icon.color: Constants.lighterAccentColor
 
                 onPressed: {
                     GUI.settings.save()
